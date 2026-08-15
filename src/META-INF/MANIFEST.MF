@@ -1,0 +1,6 @@
+Manifest-Version: 1.0
+Mod-Id: objlib
+Mod-Version: 1.0.0
+Mod-Name: OBJ Library
+Mod-Description: Simple library for loading OBJ models
+Mod-Lifecycle-Listener: dev.objlib.OBJLibrary

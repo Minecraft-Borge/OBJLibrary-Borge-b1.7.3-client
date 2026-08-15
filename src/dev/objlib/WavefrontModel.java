@@ -249,10 +249,10 @@ public class WavefrontModel implements IObjModel {
 
 			try {
 				if (tokens.length == 2) {
-					return new Vector3f(Float.parseFloat(tokens[0]), Float.parseFloat(tokens[1]), 0.0F);
+					return new Vector3f(Float.parseFloat(tokens[0]), 1.0F - Float.parseFloat(tokens[1]), 0.0F);
 				}
 				if (tokens.length == 3) {
-					return new Vector3f(Float.parseFloat(tokens[0]), Float.parseFloat(tokens[1]), Float.parseFloat(tokens[2]));
+					return new Vector3f(Float.parseFloat(tokens[0]), 1.0F - Float.parseFloat(tokens[1]), Float.parseFloat(tokens[2]));
 				}
 			} catch (NumberFormatException e) {
 				throw new WavefrontException("Number format exception at line " + count, e);

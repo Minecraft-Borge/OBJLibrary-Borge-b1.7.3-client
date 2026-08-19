@@ -40,6 +40,7 @@ public class WavefrontModel implements IObjModel {
 	private GroupObject currentGroup;
 	private final String filename;
 	private boolean smoothing = true;
+	private boolean disableFormatCheck = false;
 	private boolean allowMixedFaces = false;
 
 	public WavefrontModel(String path) {
@@ -55,6 +56,10 @@ public class WavefrontModel implements IObjModel {
 
 	public WavefrontModel disableSmoothing() {
 		this.smoothing = false;
+		return this;
+	}
+	public WavefrontModel disableFormatCheck() {
+		this.disableFormatCheck = true;
 		return this;
 	}
 	public void destroy() {
@@ -202,7 +207,7 @@ public class WavefrontModel implements IObjModel {
 	}
 
 	private Vector3f parsePositions(String line, int count) {
-		if (isValidVertexLine(line)) {
+		if (this.disableFormatCheck || isValidVertexLine(line)) {
 			line = line.substring(line.indexOf(" ") + 1);
 			String[] tokens = line.split(" ");
 
@@ -224,7 +229,7 @@ public class WavefrontModel implements IObjModel {
 	}
 
 	private Vector3f parseNormals(String line, int count) {
-		if (isValidVertexNormalLine(line)) {
+		if (this.disableFormatCheck || isValidVertexNormalLine(line)) {
 			line = line.substring(line.indexOf(" ") + 1);
 			String[] tokens = line.split(" ");
 
@@ -243,7 +248,7 @@ public class WavefrontModel implements IObjModel {
 	}
 
 	private Vector3f parseUVs(String line, int count) {
-		if (isValidTextureCoordinateLine(line)) {
+		if (this.disableFormatCheck || isValidTextureCoordinateLine(line)) {
 			line = line.substring(line.indexOf(" ") + 1);
 			String[] tokens = line.split(" ");
 
@@ -267,7 +272,7 @@ public class WavefrontModel implements IObjModel {
 	private Face parseFace(String line, int count) {
 		Face face = null;
 
-		if (isValidFaceLine(line)) {
+		if (this.disableFormatCheck || isValidFaceLine(line)) {
 			face = new Face(this.smoothing);
 
 			String trimmedLine = line.substring(line.indexOf(" ") + 1);
@@ -289,7 +294,7 @@ public class WavefrontModel implements IObjModel {
 				}
 			}
 
-			if(isValidFace_V_VT_VN_Line(line)) {
+			if(this.disableFormatCheck || isValidFace_V_VT_VN_Line(line)) {
 				face.positions = new Vector3f[tokens.length];
 				face.uvs = new Vector3f[tokens.length];
 				face.normals = new Vector3f[tokens.length];
@@ -303,7 +308,7 @@ public class WavefrontModel implements IObjModel {
 				}
 
 				face.faceNormal = face.calculateFaceNormal();
-			} else if(isValidFace_V_VT_Line(line)) {
+			} else if(this.disableFormatCheck || isValidFace_V_VT_Line(line)) {
 				face.positions = new Vector3f[tokens.length];
 				face.uvs = new Vector3f[tokens.length];
 
@@ -315,7 +320,7 @@ public class WavefrontModel implements IObjModel {
 				}
 
 				face.faceNormal = face.calculateFaceNormal();
-			} else if(isValidFace_V_VN_Line(line)) {
+			} else if(this.disableFormatCheck || isValidFace_V_VN_Line(line)) {
 				face.positions = new Vector3f[tokens.length];
 				face.normals = new Vector3f[tokens.length];
 
@@ -327,7 +332,7 @@ public class WavefrontModel implements IObjModel {
 				}
 
 				face.faceNormal = face.calculateFaceNormal();
-			} else if(isValidFace_V_Line(line)) {
+			} else if(this.disableFormatCheck || isValidFace_V_Line(line)) {
 				face.positions = new Vector3f[tokens.length];
 
 				for(int i = 0; i < tokens.length; ++i) {
@@ -346,7 +351,7 @@ public class WavefrontModel implements IObjModel {
 	private GroupObject parseGroup(String line, int count) {
 		GroupObject group = null;
 
-		if (isValidGroupObjectLine(line)) {
+		if (this.disableFormatCheck || isValidGroupObjectLine(line)) {
 			String trimmedLine = line.substring(line.indexOf(" ") + 1);
 
 			if (!trimmedLine.isEmpty()) group = new GroupObject(trimmedLine);

@@ -7,6 +7,7 @@ import java.util.List;
 @SuppressWarnings("unused")
 public interface IObjModel {
 	IObjModel disableSmoothing();
+	IObjModel disableFormatCheck();
 	void destroy();
 	String getFilename();
 	boolean allowsMixedFaces();
